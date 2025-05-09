@@ -1,0 +1,58 @@
+﻿@model IEnumerable<ETickets.Models.Category>
+
+@{
+    ViewData["Title"] = "Categories";
+    // Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<a class="btn btn-primary" href="/Admin/Category/Create">Create</a>
+
+
+<h2 class="white-text">Categories</h2>
+
+<table class="table table-dark table-striped-columns">
+    <!-- Use table-dark and table-striped-columns here -->
+    <thead>
+        <tr>
+            <th class="white-text">ID</th>
+            <th class="white-text">Name</th>
+            <th class="white-text">Movies</th>
+            <th class="white-text">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                <td>
+                    @if (category.Movies != null && category.Movies.Any())
+                    {
+                        <ul>
+                            @foreach (var movie in category.Movies)
+                            {
+                                <li>@movie.Name</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>No movies assigned</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@category.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@category.Id" method="post" style="display:inline;">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Are you sure you want to delete this category?');">
+                            Delete
+                        </button>
+                    </form>
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

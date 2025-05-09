@@ -1,0 +1,102 @@
+﻿@model ETickets.ViewModels.MovieEditViewModel
+@{
+    ViewData["Title"] = "Edit Movie";
+}
+
+<h2>Edit Movie</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Id)
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <!-- Existing Image Display -->
+    @if (!string.IsNullOrEmpty(Model.ExistingImgUrl))
+    {
+        <p>Current Image:</p>
+        <img src="~/images/MovieImg/@Model.ExistingImgUrl" style="max-width: 200px;" />
+    }
+
+    <!-- New Image Upload -->
+    <div class="form-group">
+        <label>New Image (optional)</label>
+        <input asp-for="NewImgUrl" type="file" class="form-control" />
+    </div>
+
+    <!-- Existing Trailer Display -->
+    @if (!string.IsNullOrEmpty(Model.ExistingTrailerUrl))
+    {
+        <p>Current Trailer:</p>
+        <video width="320" height="240" controls>
+            <source src="~/videos/@Model.ExistingTrailerUrl" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    }
+
+    <!-- New Trailer Upload -->
+    <div class="form-group">
+        <label>New Trailer (optional)</label>
+        <input asp-for="NewTrailerUrl" type="file" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="StartDate"></label>
+        <input asp-for="StartDate" class="form-control" type="date" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="EndDate"></label>
+        <input asp-for="EndDate" class="form-control" type="date" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Status"></label>
+        <select asp-for="Status" class="form-control" asp-items="Html.GetEnumSelectList<ETickets.Models.MovieStatus>()"></select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CinemaId">Cinema</label>
+        <select asp-for="CinemaId" class="form-control" asp-items="ViewBag.Cinemas"></select>
+        <span asp-validation-for="CinemaId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId">Category</label>
+        <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.Categories"></select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedActorIds">Actors</label>
+        <select asp-for="SelectedActorIds" asp-items="ViewBag.Actors" class="form-control" multiple="multiple"></select>
+        <span asp-validation-for="SelectedActorIds" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

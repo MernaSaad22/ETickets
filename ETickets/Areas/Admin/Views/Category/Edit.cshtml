@@ -1,0 +1,32 @@
+﻿@model ETickets.ViewModels.CategoryCreateViewModel
+
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<h2>Edit Category</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" name="id" value="@ViewData["CategoryId"]" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="SelectedMovieIds"></label>
+        <select asp-for="SelectedMovieIds" asp-items="Model.Movies" class="form-control" multiple></select>
+        <span asp-validation-for="SelectedMovieIds" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="CIndex" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

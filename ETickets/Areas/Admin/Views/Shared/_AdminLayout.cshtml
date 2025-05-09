@@ -1,0 +1,73 @@
+﻿@* Path: Areas/Admin/Views/Shared/_AdminLayout.cshtml *@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewData["Title"] - Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="~/css/Adminstyle.css" />
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="app-icon">
+                    <!-- SVG Logo -->
+                    <!-- ... keep SVG here ... -->
+                </div>
+            </div>
+            <ul class="sidebar-list">
+                <li class="sidebar-list-item">
+                    <a href="/Admin/AdminHome/Index">
+                        <!-- Icon -->
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li class="sidebar-list-item active">
+                    <a href="/Admin/Category/CIndex">
+                        <!-- Icon -->
+                        <span>Categories</span>
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="/Admin/Movie/MOIndex">
+                        <!-- Icon -->
+                        <span>Movies</span>
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="/Admin/Actor/ACIndex">
+                        <!-- Icon -->
+                        <span>Actors</span>
+                    </a>
+                </li>
+                <li class="sidebar-list-item">
+                    <a href="/Admin/Cinema/CiIndex">
+                        <!-- Icon -->
+                        <span>Cinemas</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="account-info">
+                <div class="account-info-picture">
+                    <img src="https://images.unsplash.com/photo-..." alt="Account">
+                </div>
+                <div class="account-info-name">Monica G.</div>
+                <button class="account-info-more">
+                    <!-- Icon -->
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            @RenderBody()
+        </div>
+    </div>
+
+    <script src="~/js/Adminscript.js"></script>
+</body>
+</html>

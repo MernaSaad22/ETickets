@@ -1,0 +1,65 @@
+﻿@model ETickets.ViewModels.ActorEditViewModel
+
+@{
+    ViewData["Title"] = "Edit Actor";
+}
+
+<h2>Edit Actor</h2>
+
+<form asp-action="Edit" enctype="multipart/form-data" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="ExistingProfilePicture" />
+
+    <div class="form-group">
+        <label asp-for="FirstName" class="control-label"></label>
+        <input asp-for="FirstName" class="form-control" />
+        <span asp-validation-for="FirstName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="LastName" class="control-label"></label>
+        <input asp-for="LastName" class="form-control" />
+        <span asp-validation-for="LastName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Bio" class="control-label"></label>
+        <textarea asp-for="Bio" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Bio" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="News" class="control-label"></label>
+        <textarea asp-for="News" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="News" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewProfilePicture" class="control-label"></label>
+        <input asp-for="NewProfilePicture" class="form-control-file" type="file" />
+        <span asp-validation-for="NewProfilePicture" class="text-danger"></span>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ExistingProfilePicture))
+    {
+        <div class="form-group">
+            <p>Current Picture:</p>
+            <img src="~/images/CastImg/@Model.ExistingProfilePicture" alt="Profile Picture" width="150" />
+        </div>
+    }
+
+    <div class="form-group">
+        <label asp-for="SelectedMovieIds" class="control-label"></label>
+        <select asp-for="SelectedMovieIds" asp-items="Model.Movies" class="form-control" multiple="multiple"></select>
+        <span asp-validation-for="SelectedMovieIds" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="ACIndex" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

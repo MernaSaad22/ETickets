@@ -1,0 +1,77 @@
+﻿@model IEnumerable<ETickets.Models.Movie>
+@{
+    ViewData["Title"] = "Movies";
+}
+
+<form asp-action="MIndex" method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="search" class="form-control"
+               placeholder="Search by movie name..." value="@ViewBag.Search" />
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+    </div>
+</form>
+@if (!Model.Any())
+{
+    <div class="alert alert-warning text-center w-100">
+        No movies found.
+    </div>
+}
+
+
+
+
+
+<div class="row">
+    @foreach (var movie in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <img src="~/images/MovieImg/@movie.ImgUrl" class="card-img-top" alt="@movie.Name" style="height: 300px; object-fit: cover;" />
+                <div class="card-body">
+                    <h5 class="card-title">@movie.Name</h5>
+                   
+                    <p><strong>Price:</strong> $@movie.Price</p>
+                    <p><strong>Cinema:</strong> @movie.Cinema.Name</p>
+                    <p><strong>Category:</strong> @movie.Category.Name</p>
+                    <p><strong>Start:</strong> @movie.StartDate.ToShortDateString()</p>
+                    <p><strong>End:</strong> @movie.EndDate.ToShortDateString()</p>
+
+
+
+
+
+
+
+
+                    @if(movie.EndDate<DateTime.Now){
+                        <button class="btn btn-success" type="submit" disabled>Book a ticket</button>
+                    }
+                    else{
+                        <button class="btn btn-success" type="submit">Book a ticket</button>
+
+                    }
+                    <a class="btn btn-primary" href="/Customer/Movie/MDetails/@movie.Id" role="button">Details</a>
+
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (ViewBag.TotalPages > 1)
+{
+    <nav aria-label="Movie pagination">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(ViewBag.CurrentPage == i ? "active" : "")">
+                    <a class="page-link" asp-action="MIndex" asp-route-page="@i" asp-route-search="@ViewBag.Search">@i</a>
+
+                </li>
+            }
+        </ul>
+    </nav>
+}

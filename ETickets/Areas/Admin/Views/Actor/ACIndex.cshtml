@@ -1,0 +1,44 @@
+﻿@model IEnumerable<ETickets.Models.Actor>
+
+@{
+    ViewData["Title"] = "Actors";
+    // Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="white-text">Actors</h2>
+<a class="btn btn-primary" href="/Admin/Actor/Create" >Create</a>
+
+<table class="table table-dark table-striped-columns">
+    <thead>
+        <tr>
+            <th class="white-text">ID</th>
+            <th class="white-text">First Name</th>
+            <th class="white-text">Last Name</th>
+            <th class="white-text">Bio</th>
+            <th class="white-text">Profile Picture</th>
+            <th class="white-text">News</th>
+            <th class="white-text">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var actor in Model)
+        {
+            <tr>
+                <td>@actor.Id</td>
+                <td>@actor.FirstName</td>
+                <td>@actor.LastName</td>
+                <td>@(actor.Bio?.Length > 100 ? actor.Bio.Substring(0, 100) + "..." : actor.Bio)</td>
+                <td>
+                    <img src="~/images/CastImg/@actor.ProfilePicture" alt="Profile" style="width: 60px; height: 60px; object-fit: cover;" />
+                </td>
+                <td>@(actor.News?.Length > 100 ? actor.News.Substring(0, 100) + "..." : actor.News)</td>
+                <td>
+                    <a class="btn btn-success btn-sm" href="/Admin/Actor/Edit/@actor.Id">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@actor.Id" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this actor?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

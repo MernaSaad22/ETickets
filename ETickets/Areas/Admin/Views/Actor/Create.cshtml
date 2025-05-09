@@ -1,0 +1,73 @@
+﻿@model ETickets.ViewModels.ActorCreateViewModel
+@{
+    ViewData["Title"] = "Create Actor";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="FirstName">First Name</label>
+        <input type="text" class="form-control" id="FirstName" name="FirstName" value="@Model.FirstName" required />
+        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label for="LastName">Last Name</label>
+        <input type="text" class="form-control" id="LastName" name="LastName" value="@Model.LastName" required />
+        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label for="Bio">Bio</label>
+        <textarea class="form-control" id="Bio" name="Bio">@Model.Bio</textarea>
+        @Html.ValidationMessageFor(m => m.Bio, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label for="News">News</label>
+        <textarea class="form-control" id="News" name="News">@Model.News</textarea>
+        @Html.ValidationMessageFor(m => m.News, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label for="ProfilePicture">Profile Picture</label>
+        <input type="file" class="form-control" id="ProfilePicture" name="ProfilePicture" accept="image/*" />
+        <img id="preview" src="#" alt="Image Preview" style="display: none; margin-top: 10px; max-width: 200px;" />
+        @Html.ValidationMessageFor(m => m.ProfilePicture, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <label for="SelectedMovieIds">Movies</label>
+        <select class="form-control" id="SelectedMovieIds" name="SelectedMovieIds" multiple="multiple">
+            @foreach (var movie in Model.Movies)
+            {
+                <option value="@movie.Value">@movie.Text</option>
+            }
+        </select>
+        @Html.ValidationMessageFor(m => m.SelectedMovieIds, "", new { @class = "text-danger" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Actor</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // JavaScript function to display the selected image
+        document.getElementById("ProfilePicture").addEventListener("change", function(event) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var previewImage = document.getElementById("preview");
+                previewImage.style.display = "block"; // Show the preview image
+                previewImage.src = e.target.result;  // Set the preview image to the selected file
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        });
+    </script>
+}

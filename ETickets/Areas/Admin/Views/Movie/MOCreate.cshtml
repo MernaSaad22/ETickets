@@ -1,0 +1,83 @@
+﻿@* @model ETickets.Models.Movie
+
+@{
+    ViewData["Title"] = "Create Movie";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Create Movie</h2>
+
+<form method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()  <!-- CSRF Token -->
+
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required />
+    </div>
+
+    <div class="form-group">
+        <label for="Description">Description</label>
+        <textarea class="form-control" id="Description" name="Description" required>@Model.Description</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="Price">Price</label>
+        <input type="number" step="0.01" class="form-control" id="Price" name="Price" value="@Model.Price" required />
+    </div>
+
+    <div class="form-group">
+        <label for="StartDate">Start Date</label>
+        <input type="date" class="form-control" id="StartDate" name="StartDate" value="@Model.StartDate.ToString("yyyy-MM-dd")" required />
+    </div>
+
+    <div class="form-group">
+        <label for="EndDate">End Date</label>
+        <input type="date" class="form-control" id="EndDate" name="EndDate" value="@Model.EndDate.ToString("yyyy-MM-dd")" required />
+    </div>
+
+    <div class="form-group">
+        <label for="CategoryId">Category</label>
+        <select class="form-control" id="CategoryId" name="CategoryId" required>
+            <option value="">Select Category</option>
+            @foreach (var category in ViewBag.Categories as IEnumerable<ETickets.Models.Category>)
+            {
+                <option value="@category.Id" @(category.Id == Model.CategoryId ? "selected" : "")>@category.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="CinemaId">Cinema</label>
+        <select class="form-control" id="CinemaId" name="CinemaId" required>
+            <option value="">Select Cinema</option>
+            @foreach (var cinema in ViewBag.Cinemas as IEnumerable<ETickets.Models.Cinema>)
+            {
+                <option value="@cinema.Id" @(cinema.Id == Model.CinemaId ? "selected" : "")>@cinema.Name</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="ImgUrl">Image URL</label>
+        <input type="file" class="form-control" id="ImgUrl" name="ImgUrl" required />
+    </div>
+
+    <div class="form-group">
+        <label for="TrailerUrl">Trailer URL</label>
+        <input type="text" class="form-control" id="TrailerUrl" name="TrailerUrl" value="@Model.TrailerUrl" />
+    </div>
+
+    <div class="form-group">
+        <label for="Actors">Select Actors</label>
+        <select class="form-control" id="Actors" name="selectedActors" multiple="multiple">
+            @foreach (var actor in ViewBag.Actors as IEnumerable<ETickets.Models.Actor>)
+            {
+                <option value="@actor.Id">@actor.FirstName @actor.LastName</option>
+            }
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Create Movie</button>
+    <a href="@Url.Action("Index", "Movie", new { area = "Admin" })" class="btn btn-danger">Cancel</a>
+</form>
+ *@
