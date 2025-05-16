@@ -12,6 +12,8 @@ namespace ETickets.Repository
         {
             _context = context;
         }
+       
+
     }
 
 }

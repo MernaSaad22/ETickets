@@ -1,0 +1,260 @@
+﻿@* @model IEnumerable<ETickets.Models.Cinema>
+
+@{
+    ViewData["Title"] = "Create Cinema";
+}
+
+<div class="container">
+    <div class="row mb-3 align-items-center my-3">
+        <div class="col-md-12">
+            <h2 class="display-6">Create a Cinema</h2>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="Name" required>
+            </div>
+            <div class="mb-3">
+                <label for="Description" class="form-label">Description</label>
+                <input type="text" class="form-control" id="Description" name="Description" required>
+            </div>
+            <div class="mb-3">
+                <label for="Address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="Address" name="Address" required>
+            </div>
+            <div class="mb-3">
+                <label for="CinemaLogo" class="form-label">Cinema Logo</label>
+                <input type="file" class="form-control" id="CinemaLogo" name="CinemaLogo" accept="image/*" required>
+                <br />
+                <img id="imgPreview" src="#" alt="Image Preview" style="max-width: 200px; display: none;" />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('CinemaLogo').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('imgPreview');
+
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '#';
+            preview.style.display = 'none';
+        }
+    });
+</script>
+ *@
+
+
+@* @model ETickets.ViewModels.CinemaFormViewModel *@
+@* <form method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label class="form-label">Name</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <input asp-for="Description" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Cinema Logo</label>
+        <input asp-for="CinemaLogo" type="file" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Select Movies</label>
+        <select asp-for="SelectedMovieIds" asp-items="Model.AvailableMovies" multiple class="form-control"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form> *@
+@* =============================== *@
+
+@* <form asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <!-- Cinema Logo -->
+    <div class="form-group">
+        <label asp-for="CinemaLogo"></label>
+        <input asp-for="CinemaLogo" type="file" class="form-control" />
+        <span asp-validation-for="CinemaLogo" class="text-danger"></span>
+    </div>
+
+    <!-- Movie Selection -->
+    <div class="form-group">
+        <label asp-for="SelectedMovieIds"></label>
+        <select asp-for="SelectedMovieIds" asp-items="Model.AvailableMovies" class="form-control" multiple>
+        </select>
+        <span asp-validation-for="SelectedMovieIds" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="CiIndex" class="btn btn-secondary">Cancel</a>
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+} *@
+@* ======================== *@
+
+
+@* @{
+    ViewData["Title"] = "Create Cinema";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <h1>Create New Cinema</h1>
+        
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="LogoFile" class="control-label"></label>
+                <input asp-for="LogoFile" type="file" class="form-control-file" accept="image/*" />
+                <span asp-validation-for="LogoFile" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label">Select Movies</label>
+                <select asp-for="MovieIds" class="form-control" multiple>
+                    @foreach (var movie in Model.AvailableMovies)
+                    {
+                        <option value="@movie.Id">@movie.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="MovieIds" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+                <a class="btn btn-secondary" asp-action="CiIndex">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+ *@
+
+  @model ETickets.ViewModels.CinemaFormViewModel
+
+@{
+    ViewData["Title"] = "Create Cinema";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Create New Cinema</h1>
+            </div>
+            <div class="card-body">
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="LogoFile" class="control-label"></label>
+                        <input asp-for="LogoFile" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="LogoFile" class="text-danger"></span>
+                        <small class="text-muted">(Optional)</small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Address" class="form-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Select Movies</label>
+                        <select asp-for="MovieIds" class="form-select" multiple size="5">
+                            @foreach (var movie in Model.AvailableMovies)
+                            {
+                                <option value="@movie.Id">@movie.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="MovieIds" class="text-danger"></span>
+                        <small class="form-text text-muted">Hold CTRL to select multiple movies</small>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="bi bi-save"></i> Create
+                        </button>
+                        <a class="btn btn-secondary" asp-action="CiIndex">
+                            <i class="bi bi-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

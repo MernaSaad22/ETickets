@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ETickets.styles.css" asp-append-version="true" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -32,6 +33,19 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul> *@
+
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                            @if (User is not null && User.Identity!.IsAuthenticated)
+                            {
+                                <li class="nav-item"><a class="nav-link" href="/Identity/Profile/Index">Welcome</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/Identity/Account/Logout">Logout</a></li>
+                            }
+                            else
+                            {
+                                <li class="nav-item"><a class="nav-link" href="/Identity/Account/Login">Login</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/Identity/Account/Register">Register</a></li>
+                            }
+                        </ul>
                 </div>
             </div>
         </nav>
@@ -50,6 +64,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

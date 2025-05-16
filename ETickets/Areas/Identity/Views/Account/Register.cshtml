@@ -1,0 +1,62 @@
+﻿@model ETickets.ViewModels.RegisterVM
+<div class="container">
+    <div class="row mb-3 align-items-center my-3">
+        <div class="col-12">
+            <h2 class="display-6">Register new Account</h2>
+        </div>
+    </div>
+<div class="row">
+    <div class="col-12">
+        <form asp-action="Register">
+            <div class="text-danger" asp-validation-summary="All"></div>
+            <div class="mb-3">
+                <label for="Email" class="form-label">Email address</label>
+                <input class="form-control" asp-for="Email">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="UserName" class="form-label">User Name</label>
+                <input class="form-control" asp-for="UserName">
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="Password" class="form-label">Password</label>
+                <input class="form-control" asp-for="Password">
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="ConfirmPassword" class="form-label">Confirm Password</label>
+                <input class="form-control" asp-for="ConfirmPassword">
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="Address" class="form-label">Address</label>
+                <input class="form-control" asp-for="Address">
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label for="Age" class="form-label">Age</label>
+                <input class="form-control" asp-for="Age">
+                <span asp-validation-for="Age" class="text-danger"></span>
+            </div>
+                <div class="mb-3">
+                    <label asp-for="Gender" class="form-label">Gender</label>
+                    <select asp-for="Gender" class="form-select">
+                        <option value="">-- Select Gender --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+
+            <button type="submit" class="btn btn-primary mb-5">Create</button>
+        </form>
+
+    </div>
+</div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial">
+}

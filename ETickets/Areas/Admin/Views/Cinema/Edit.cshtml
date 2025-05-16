@@ -1,0 +1,186 @@
+﻿@* @model ETickets.ViewModels.CinemaFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Cinema";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Edit Cinema</h1>
+            </div>
+            <div class="card-body">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <form asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data">
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.CinemaLogo))
+                    {
+                            <div class="mb-3">
+                                <label class="form-label">Current Logo</label><br />
+                                <img src="@Model.CinemaLogo" alt="Cinema Logo" style="max-height: 100px;" />
+                            </div>
+                    }
+
+                    <div class="form-group mb-3">
+                        <label asp-for="LogoFile" class="form-label"></label>
+                        <input asp-for="LogoFile" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="LogoFile" class="text-danger"></span>
+                        <small class="form-text text-muted">Upload a new logo to replace the current one</small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Address" class="form-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="form-label">Select Movies</label>
+                        <select asp-for="MovieIds" class="form-select" multiple size="5">
+                            @foreach (var movie in Model.AvailableMovies)
+                            {
+                                    <option value="@movie.Id" selected="@(Model.MovieIds != null && Model.MovieIds.Contains(movie.Id))">
+                                    @movie.Name
+                                    </option>
+                            }
+                        </select>
+                        <span asp-validation-for="MovieIds" class="text-danger"></span>
+                        <small class="form-text text-muted">Hold CTRL (or CMD) to select multiple</small>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-success me-2">
+                            <i class="bi bi-save"></i> Update
+                        </button>
+                        <a class="btn btn-secondary" asp-action="CiIndex">
+                            <i class="bi bi-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+}
+ *@
+
+@model ETickets.ViewModels.CinemaFormViewModel
+
+@{
+    ViewData["Title"] = "Edit Cinema";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <div class="card">
+            <div class="card-header">
+                <h1 class="card-title">Edit Cinema</h1>
+            </div>
+            <div class="card-body">
+                @if (TempData["SuccessMessage"] != null)
+                {
+                    <div class="alert alert-success">
+                        @TempData["SuccessMessage"]
+                    </div>
+                }
+                @if (TempData["ErrorMessage"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["ErrorMessage"]
+                    </div>
+                }
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+                    
+                    <div class="form-group mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        @if (!string.IsNullOrEmpty(Model.CinemaLogo))
+                        {
+                            <div class="mb-2">
+                                <label class="form-label">Current Logo</label><br />
+                                <img src="@Model.CinemaLogo" alt="Cinema Logo" class="img-thumbnail" style="max-height: 100px;" />
+                            </div>
+                        }
+                        <label asp-for="LogoFile" class="form-label">@(string.IsNullOrEmpty(Model.CinemaLogo) ? "Upload Logo" : "Change Logo")</label>
+                        <input asp-for="LogoFile" type="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="LogoFile" class="text-danger"></span>
+                        <small class="form-text text-muted">Leave empty to keep current logo</small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="Address" class="form-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label asp-for="MovieIds" class="form-label">Associated Movies</label>
+                        <select asp-for="MovieIds" class="form-select" multiple>
+                            @foreach (var movie in Model.AvailableMovies)
+                            {
+                                <option value="@movie.Id" selected="@(Model.MovieIds?.Contains(movie.Id) ?? false)">
+                                    @movie.Name
+                                </option>
+                            }
+                        </select>
+                        <span asp-validation-for="MovieIds" class="text-danger"></span>
+                        <small class="form-text text-muted">Hold Ctrl (Windows) or Command (Mac) to select multiple</small>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn btn-primary me-2">
+                            <i class="bi bi-save"></i> Save Changes
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function() {
+            // Initialize select2 for better multi-select experience
+            $('#MovieIds').select2({
+                placeholder: "Select movies",
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+}

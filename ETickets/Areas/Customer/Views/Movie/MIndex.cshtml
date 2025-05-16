@@ -2,7 +2,14 @@
 @{
     ViewData["Title"] = "Movies";
 }
-
+@section Scripts {
+    @if (TempData["Notification"] is not null)
+    {
+        <script>
+            toastr.success('@TempData["Notification"]')
+        </script>
+    }
+}
 <form asp-action="MIndex" method="get" class="mb-4">
     <div class="input-group">
         <input type="text" name="search" class="form-control"

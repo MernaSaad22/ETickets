@@ -2,6 +2,10 @@ using ETickets.Data;
 using ETickets.Repository.IRepository;
 using ETickets.Repository;
 using Microsoft.EntityFrameworkCore;
+using ETickets.Models;
+using Microsoft.AspNetCore.Identity;
+using ETickets.Utility;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace ETickets
 {
@@ -18,6 +22,12 @@ namespace ETickets
                 option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredUniqueChars = 0;
+                options.SignIn.RequireConfirmedEmail = false;
+            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders(); 
+
 
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IActorRepository, ActorRepository>();
@@ -25,6 +35,9 @@ namespace ETickets
 
             builder.Services.AddScoped<IMovieRepository, MovieRepository>();
             builder.Services.AddScoped<IActorMovieRepository, ActorMovieRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
             var app = builder.Build();
@@ -36,6 +49,7 @@ namespace ETickets
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            
 
             app.UseHttpsRedirection();
             app.UseRouting();

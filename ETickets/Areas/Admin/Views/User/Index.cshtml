@@ -1,0 +1,94 @@
+﻿@model IEnumerable<ApplicationUser>
+
+@{
+    var i = 1;
+}
+
+<div class="container">
+    <div class="row mb-3 align-items-center my-3">
+        <div class="col-md-6">
+            <h2 class="display-6">All Users</h2>
+        </div>
+        <div class="col-md-6 text-md-end text-start mt-2 mt-md-0">
+            <a href="/Admin/User/Create" class="btn btn-success">Create</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row">@(i++)</th>
+                            <td>@item.UserName</td>
+                            @if (item.Email is not null && item.Email.Length > 50)
+                            {
+                                <td>@item.Email.Substring(0, 50)...</td>
+                            }
+                            else
+                            {
+                                <td>@item.Email</td>
+                            }
+                            @if (item.Address is not null && item.Address.Length > 50)
+                            {
+                                <td>@item.Address.Substring(0, 50)...</td>
+                            }
+                            else
+                            {
+                                <td>@item.Address</td>
+                            }
+
+                            <td>
+                                <a href="/Admin/User/ChangeRole/@item.Id" type="button" class="btn btn-warning">Change Role</a>
+                                @if (item.LockoutEnabled)
+                                {
+                                    <a href="javascript:;" class="btn btn-danger btn-delete" data-id="@item.Id">Block</a>
+                                }
+                                else
+                                {
+                                    <a href="/Admin/User/LockUnLock/@item.Id" class="btn btn-success">Un Block</a>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.btn-delete');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const userId = this.getAttribute('data-id');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, Block it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = `/Admin/User/LockUnLock/${userId}`;
+                    }
+                });
+            });
+        });
+    });
+</script>

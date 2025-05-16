@@ -57,6 +57,16 @@ namespace ETickets.Repository
                 return false;  // Return false if there is an exception
             }
         }
+        public async Task<IEnumerable<Movie>> GetByIdsAsync(IEnumerable<int> ids)
+        {
+            return await _context.Movies
+                                 .Where(m => ids.Contains(m.Id))
+                                 .ToListAsync();
+        }
+        public async Task<IEnumerable<Movie>> GetAllAsync()
+        {
+            return await _context.Movies.ToListAsync();
+        }
 
     }
 }

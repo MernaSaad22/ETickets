@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ETickets.Models.Cinema>
+﻿@* @model IEnumerable<ETickets.Models.Cinema>
 
 @{
     ViewData["Title"] = "Cinemas";
@@ -7,7 +7,8 @@
 
 <h2 class="white-text">Cinemas</h2>
 <div class="text-right">
-    <a asp-area="Admin" asp-controller="Cinema" asp-action="CreateC" class="btn btn-primary">Create Cinema</a>
+    <a asp-area="Admin" asp-controller="Cinema" asp-action="Create" class="btn btn-primary">Create Cinema</a>
+
 
 </div>
 
@@ -32,7 +33,7 @@
                 <td>@cinema.Name</td>
                 <td>@(cinema.Description?.Length > 100 ? cinema.Description.Substring(0, 100) + "..." : cinema.Description)</td>
                 <td>
-                    <img src="~/images/Logotest/@cinema.CinemaLogo" alt="Cinema Logo" style="width: 60px; height: 60px; object-fit: cover;" />
+                    <img src="~/images/LogoImg/@cinema.CinemaLogo" alt="Cinema Logo" style="width: 60px; height: 60px; object-fit: cover;" />
                 </td>
                 <td>@cinema.Address</td>
                 <td>
@@ -53,9 +54,95 @@
                 <td>
                     <button type="button" class="btn btn-success">Edit</button>
                     <button type="button" class="btn btn-danger">Delete</button>
-@*                     <a class="btn btn-success btn-sm" href="/Admin/Cinema/Edit/@cinema.Id">Edit</a>
-                    <a class="btn btn-danger btn-sm" href="/Admin/Cinema/Delete/@cinema.Id"
-                       onclick="return confirm('Are you sure you want to delete this cinema?');">Delete</a> *@
+                <td>
+
+                </td>
+
+                </td>
+            </tr>
+        }
+
+        <a asp-area="Admin" asp-controller="Cinema" asp-action="Edit" asp-route-id="@cinema.Id" class="btn btn-success btn-sm">
+            Edit
+        </a>
+        <a asp-area="Admin" asp-controller="Cinema" asp-action="Delete" asp-route-id="@cinema.Id"
+           class="btn btn-danger btn-sm"
+           onclick="return confirm('Are you sure you want to delete this cinema?');">
+            Delete
+        </a>
+    </tbody>
+</table>
+ *@
+
+
+
+ @model IEnumerable<ETickets.Models.Cinema>
+
+@{
+    ViewData["Title"] = "Cinemas";
+    // Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="white-text">Cinemas</h2>
+
+<div class="text-end mb-3">
+    <a asp-area="Admin" asp-controller="Cinema" asp-action="Create" class="btn btn-primary">
+        Create Cinema
+    </a>
+</div>
+
+<table class="table table-dark table-striped-columns my-3">
+    <thead>
+        <tr>
+            <th class="white-text">ID</th>
+            <th class="white-text">Name</th>
+            <th class="white-text">Description</th>
+            <th class="white-text">Logo</th>
+            <th class="white-text">Address</th>
+            <th class="white-text">Movies</th>
+            <th class="white-text">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var cinema in Model)
+        {
+            <tr>
+                <td>@cinema.Id</td>
+                <td>@cinema.Name</td>
+                <td>@(cinema.Description?.Length > 100 ? cinema.Description.Substring(0, 100) + "..." : cinema.Description)</td>
+                <td>
+                    <img src="~/images/LogoImg/@cinema.CinemaLogo" alt="Cinema Logo"
+                         style="width: 60px; height: 60px; object-fit: cover;" />
+                </td>
+                <td>@cinema.Address</td>
+                <td>
+                    @if (cinema.Movies != null && cinema.Movies.Any())
+                    {
+                        <ul>
+                            @foreach (var movie in cinema.Movies)
+                            {
+                                <li>@movie.Name</li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span>No movies listed</span>
+                    }
+                </td>
+                <td>
+                    <a asp-area="Admin" asp-controller="Cinema" asp-action="Edit" asp-route-id="@cinema.Id"
+                       class="btn btn-success btn-sm me-1">
+                        Edit
+                    </a>
+                    <form asp-area="Admin" asp-controller="Cinema" asp-action="DeleteConfirmed"
+                          asp-route-id="@cinema.Id"
+                          method="post"
+                          style="display:inline"
+                          onsubmit="return confirm('Are you sure you want to delete this cinema?');">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+
                 </td>
             </tr>
         }

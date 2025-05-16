@@ -7,5 +7,8 @@ namespace ETickets.Repository.IRepository
         Movie? GetMovieWithActorsById(int id);
         Task<Movie?> GetByIdAsync(int id);
         Task<bool> UpdateAsync(Movie movie);  // Add this method signature
+        Task<IEnumerable<Movie>> GetByIdsAsync(IEnumerable<int> ids);
+        Task<IEnumerable<Movie>> GetAllAsync();
+
     }
 }
