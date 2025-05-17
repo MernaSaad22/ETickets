@@ -6,6 +6,7 @@ using ETickets.Models;
 using Microsoft.AspNetCore.Identity;
 using ETickets.Utility;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using ETickets.Utility.DBInitilizer;
 
 namespace ETickets
 {
@@ -38,6 +39,7 @@ namespace ETickets
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IRoleRepository, RoleRepository>();
             builder.Services.AddTransient<IEmailSender, EmailSender>();
+            builder.Services.AddScoped<IDBInitilizer, DBInitilizer>();
 
 
             var app = builder.Build();
@@ -55,6 +57,13 @@ namespace ETickets
             app.UseRouting();
 
             app.UseAuthorization();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbInitializer = scope.ServiceProvider.GetRequiredService<IDBInitilizer>();
+                dbInitializer.Initilize();
+            }
+
 
             app.MapStaticAssets();
             app.MapControllerRoute(

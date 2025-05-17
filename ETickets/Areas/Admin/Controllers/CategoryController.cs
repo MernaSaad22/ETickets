@@ -7,11 +7,13 @@ using Microsoft.EntityFrameworkCore;
 using ETickets.ViewModels;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Authorization;
+using ETickets.Utility;
 
 namespace ETickets.Areas.Admin.Controllers
 {
     [Area("Admin")]
-   
+    [Authorize(Roles = $"{SD.SuperAdmin},{SD.Admin}")]
+
     public class CategoryController : Controller
     {
         private readonly ICategoryRepository _categoryRepository;

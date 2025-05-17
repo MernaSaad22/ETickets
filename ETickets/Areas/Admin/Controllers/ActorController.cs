@@ -1,7 +1,9 @@
 ﻿using ETickets.Models;
 using ETickets.Repository;
 using ETickets.Repository.IRepository;
+using ETickets.Utility;
 using ETickets.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ETickets.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    
     public class ActorController : Controller
     {
         private readonly IActorRepository _actorRepository;
@@ -30,7 +33,7 @@ namespace ETickets.Areas.Admin.Controllers
             return View(actors);
         }
 
-
+        [Authorize(Roles = $"{SD.SuperAdmin}")]
         public async Task<IActionResult> Create()
         {
             var allMovies = await _movieRepository.GetAsync(); // Get all movies to populate the dropdown
@@ -123,6 +126,8 @@ namespace ETickets.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+
+        [Authorize(Roles = $"{SD.SuperAdmin},{SD.Admin}")]
 
         public async Task<IActionResult> Edit(int id)
         {
@@ -226,7 +231,7 @@ namespace ETickets.Areas.Admin.Controllers
 
             return View(viewModel);
         }
-
+        [Authorize(Roles = $"{SD.SuperAdmin},{SD.Admin}")]
 
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -1,4 +1,5 @@
 ﻿@* Path: Areas/Admin/Views/Shared/_AdminLayout.cshtml *@
+@using ETickets.Utility
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,36 +26,47 @@
                         <span>Home</span>
                     </a>
                 </li>
-                <li class="sidebar-list-item active">
-                    <a href="/Admin/Category/CIndex">
-                        <!-- Icon -->
-                        <span>Categories</span>
-                    </a>
-                </li>
-                <li class="sidebar-list-item">
-                    <a href="/Admin/Movie/MOIndex">
-                        <!-- Icon -->
-                        <span>Movies</span>
-                    </a>
-                </li>
-                <li class="sidebar-list-item">
-                    <a href="/Admin/Actor/ACIndex">
-                        <!-- Icon -->
-                        <span>Actors</span>
-                    </a>
-                </li>
-                <li class="sidebar-list-item">
-                    <a href="/Admin/Cinema/CiIndex">
-                        <!-- Icon -->
-                        <span>Cinemas</span>
-                    </a>
-                </li>
-                <li class="sidebar-list-item">
-                    <a href="/Admin/User/Index">
-                        <!-- Icon -->
-                        <span>Users</span>
-                    </a>
-                </li>
+                @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                {
+                    <li class="sidebar-list-item active">
+                        <a href="/Admin/Category/CIndex">
+                            <!-- Icon -->
+                            <span>Categories</span>
+                        </a>
+                    </li>
+          
+                    <li class="sidebar-list-item">
+                        <a href="/Admin/Actor/ACIndex">
+                            <!-- Icon -->
+                            <span>Actors</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-list-item">
+                        <a href="/Admin/User/Index">
+                            <!-- Icon -->
+                            <span>Users</span>
+                        </a>
+                    </li>
+                }
+
+                @if (User.IsInRole($"{SD.Admin}") || User.IsInRole($"{SD.SuperAdmin}") || User.IsInRole($"{SD.Company}")){
+                    <li class="sidebar-list-item">
+                        <a href="/Admin/Movie/MOIndex">
+                            <!-- Icon -->
+                            <span>Movies</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-list-item">
+                        <a href="/Admin/Cinema/CiIndex">
+                            <!-- Icon -->
+                            <span>Cinemas</span>
+                        </a>
+                    </li>
+                }
+             
+
+   
             </ul>
 
             <div class="account-info">

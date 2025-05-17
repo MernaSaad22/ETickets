@@ -29,13 +29,13 @@ namespace ETickets.Areas.Identity.Controllers
 
        public async Task<IActionResult> Register()
         {
-            if(_roleManager.Roles.IsNullOrEmpty())
-            {
-                await _roleManager.CreateAsync(new(SD.SuperAdmin));
-                await _roleManager.CreateAsync(new(SD.Admin));
-                await _roleManager.CreateAsync(new(SD.Company));
-                await _roleManager.CreateAsync(new(SD.Customer));
-            }
+            //if(_roleManager.Roles.IsNullOrEmpty())
+            //{
+            //    await _roleManager.CreateAsync(new(SD.SuperAdmin));
+            //    await _roleManager.CreateAsync(new(SD.Admin));
+            //    await _roleManager.CreateAsync(new(SD.Company));
+            //    await _roleManager.CreateAsync(new(SD.Customer));
+            //}
 
                   
             return View();
@@ -307,6 +307,109 @@ namespace ETickets.Areas.Identity.Controllers
 
             ModelState.AddModelError("Email", "Invalid Email");
             return View(resetPasswordVM);
+        }
+
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ProfileVM
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                Address = user.Address,
+                Age = user.Age,
+                Gender = user.Gender,
+                ProfileImage = user.ProfileImage ?? "/images/profiles/default-profile.png"
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProfileImage(IFormFile newProfileImage)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (newProfileImage != null && newProfileImage.Length > 0)
+            {
+                // Delete old image if exists
+                if (!string.IsNullOrEmpty(user.ProfileImage) && user.ProfileImage != "/images/profiles/default-profile.png")
+                {
+                    var oldImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", user.ProfileImage.TrimStart('/'));
+                    if (System.IO.File.Exists(oldImagePath))
+                    {
+                        System.IO.File.Delete(oldImagePath);
+                    }
+                }
+
+                // Save new image
+                var uploadsFolder = Path.Combine("wwwroot", "images", "profiles");
+                Directory.CreateDirectory(uploadsFolder);
+
+                var uniqueFileName = Guid.NewGuid() + Path.GetExtension(newProfileImage.FileName);
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await newProfileImage.CopyToAsync(fileStream);
+                }
+
+                user.ProfileImage = uniqueFileName;
+                await _userManager.UpdateAsync(user);
+            }
+
+            return RedirectToAction("Profile");
+        }
+
+
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassword(ChangePasswordVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                await _signInManager.RefreshSignInAsync(user);
+                TempData["Notification"] = "Password changed successfully";
+                return RedirectToAction("Profile");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(model);
+            }
         }
 
     }

@@ -1,0 +1,62 @@
+﻿@model ProfileVM
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="@Model.ProfileImage" class="rounded-circle mb-3" width="150" height="150">
+
+                    <form asp-action="UpdateProfileImage" method="post" enctype="multipart/form-data">
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <input type="file" name="newProfileImage" class="form-control-file" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-sm mt-2">Update Photo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Profile Information</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-3">Username:</div>
+                        <div class="col-sm-9">@Model.UserName</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">Email:</div>
+                        <div class="col-sm-9">@Model.Email</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">Adress:</div>
+                        <div class="col-sm-9">@Model.Address</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">Age:</div>
+                        <div class="col-sm-9">@Model.Age</div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">Gender:</div>
+                        <div class="col-sm-9">@Model.Gender</div>
+                    </div>
+
+                    <div class="card-body">
+                    <!-- Your existing profile info -->
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <a asp-action="ChangePassword" class="btn btn-warning">Change Password</a>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,8 @@
 ﻿using ETickets.Models;
 using ETickets.Repository.IRepository;
+using ETickets.Utility;
 using ETickets.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Linq.Expressions;
@@ -8,6 +10,7 @@ using System.Linq.Expressions;
 namespace ETickets.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{SD.SuperAdmin},{SD.Admin},{SD.Company}")]
     public class MovieController : Controller
     {
         private readonly IMovieRepository _movieRepository;
